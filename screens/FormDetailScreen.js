@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Platform, Dimensions } from 'react-native';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 export default function FormDetailScreen({ route, navigation }) {
   const { form } = route.params;
@@ -28,8 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    width: '100%',
-    maxWidth: '50%',
+    width: Platform.OS === 'web' ? '30%' : '90%',
     padding: 16,
   },
   formName: {
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   fieldContainer: {
     marginBottom: 12,
   },
-  fieldType: {
+  fieldTitle: {
     fontSize: 18,
     fontWeight: 'bold',
   },

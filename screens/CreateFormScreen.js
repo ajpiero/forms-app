@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Picker, Keyboard } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Keyboard, Dimensions, Platform } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Formik, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import { addForm } from '../slices/formsSlice';
+import { Picker } from '@react-native-picker/picker';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const validateFieldValue = (value, type) => {
   if (type === 'number') {
@@ -132,10 +135,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 16,
   },
   container: {
-    width: '100%',
-    maxWidth: '50%',
+    width: Platform.OS === 'web' ? '40%' : '90%',
     padding: 16,
   },
   label: {
@@ -148,24 +151,21 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     marginBottom: 8,
-    marginRight: 10,
-    flex: 1,
+    width: '100%',
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 4,
     padding: 8,
-    marginRight: 10,
-    flex: 0.5,
+    flex: 1,
   },
   titleInput: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 4,
     padding: 8,
-    marginRight: 10,
-    flex: 0.5,
+    flex: 1,
   },
   fieldGroup: {
     marginBottom: 16,
@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   smallPicker: {
-    height: 50,
-    width: '20%',
+    height: Platform.OS === 'web' ? 50 : 40,
+    width: Platform.OS === 'web' ? '20%' : '30%',
     marginRight: 10,
   },
   button: {

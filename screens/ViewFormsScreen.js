@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Dimensions, Platform, Button } from 'react-native';
 import { useSelector } from 'react-redux';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 export default function ViewFormsScreen({ navigation }) {
   const forms = useSelector((state) => state.forms.list);
@@ -34,8 +36,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    width: '100%',
-    maxWidth: '50%',
+    width: Platform.OS === 'web' ? '30%' : '90%',
     padding: 16,
   },
   formContainer: {
