@@ -10,7 +10,7 @@ export default function FormDetailScreen({ route, navigation }) {
         <Text style={styles.formName}>{form.formName}</Text>
         {form.fields.map((field, index) => (
           <View key={index} style={styles.fieldContainer}>
-            <Text style={styles.fieldType}>{field.type}:</Text>
+            <Text style={styles.fieldTitle}>{field.title}:</Text>
             <Text style={styles.fieldValue}>{field.value}</Text>
           </View>
         ))}

@@ -20,6 +20,7 @@ const validationSchema = Yup.object().shape({
   formName: Yup.string().required('Form name is required'),
   fields: Yup.array().of(
     Yup.object().shape({
+      title: Yup.string().required('Title is required'),
       type: Yup.string().required('Type is required'),
       value: Yup.string()
         .required('Value is required')
@@ -50,7 +51,7 @@ export default function CreateFormScreen({ navigation }) {
           <View style={styles.container}>
             <Text style={styles.label}>Name of Form:</Text>
             <TextInput
-              style={styles.input}
+              style={styles.formNameInput}
               onChangeText={handleChange('formName')}
               onBlur={handleBlur('formName')}
               value={values.formName}
@@ -76,26 +77,41 @@ export default function CreateFormScreen({ navigation }) {
                           <Picker.Item label="Text" value="text" />
                           <Picker.Item label="Number" value="number" />
                         </Picker>
+                        
+                        <TextInput
+                          style={styles.titleInput}
+                          placeholder="Title"
+                          onChangeText={(value) => setFieldValue(`fields[${index}].title`, value)}
+                          onBlur={handleBlur(`fields[${index}].title`)}
+                          value={field.title}
+                        />
+                        
                         <TextInput
                           style={styles.input}
-                          placeholder={field.type === 'number' ? 'Write your number' : 'Write your text'}
+                          placeholder={field.type === 'number' ? 'Write total' : 'Write text'}
                           onChangeText={(value) => setFieldValue(`fields[${index}].value`, value)}
                           onBlur={handleBlur(`fields[${index}].value`)}
                           value={field.value}
                           onSubmitEditing={() => Keyboard.dismiss()} 
                           returnKeyType="done" 
                         />
+                        
                         <Button title="Remove" onPress={() => remove(index)} style={styles.button} />
                       </View>
-                      {touched.fields && touched.fields[index] && errors.fields && errors.fields[index]?.value ? (
-                        <Text style={styles.error}>{errors.fields[index].value}</Text>
-                      ) : null}
+                      {/* Error messages */}
+                      {touched.fields && touched.fields[index] && errors.fields && errors.fields[index] && (
+                        <View>
+                          {errors.fields[index].type && <Text style={styles.error}>{errors.fields[index].type}</Text>}
+                          {errors.fields[index].title && <Text style={styles.error}>{errors.fields[index].title}</Text>}
+                          {errors.fields[index].value && <Text style={styles.error}>{errors.fields[index].value}</Text>}
+                        </View>
+                      )}
                     </View>
                   ))}
 
                   <Button
                     title="+ Add New Field"
-                    onPress={() => push({ type: 'text', value: '' })}
+                    onPress={() => push({ title: '', type: 'text', value: '' })}
                   />
                 </>
               )}
@@ -126,14 +142,30 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 8,
   },
+  formNameInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 8,
+    marginBottom: 8,
+    marginRight: 10,
+    flex: 1,
+  },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 4,
     padding: 8,
-    marginBottom: 8, 
-    flex: 1,
-    marginRight:10,
+    marginRight: 10,
+    flex: 0.5,
+  },
+  titleInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 8,
+    marginRight: 10,
+    flex: 0.5,
   },
   fieldGroup: {
     marginBottom: 16,
@@ -141,23 +173,22 @@ const styles = StyleSheet.create({
   fieldContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 4, 
+    marginBottom: 4,
   },
   smallPicker: {
     height: 50,
-    width: '30%',
+    width: '20%',
     marginRight: 10,
   },
   button: {
-    marginLeft: 10,  
+    flex: 0.2,
   },
   error: {
     fontSize: 12,
     color: 'red',
-    marginTop: 4, 
+    marginTop: 4,
   },
   spacer: {
     height: 20,
   },
 });
-
