@@ -66,25 +66,27 @@ export default function CreateFormScreen({ navigation }) {
               render={({ push, remove }) => (
                 <>
                   {values.fields.map((field, index) => (
-                    <View key={index} style={styles.fieldContainer}>
-                      <Picker
-                        selectedValue={field.type}
-                        style={styles.smallPicker}
-                        onValueChange={(itemValue) => setFieldValue(`fields[${index}].type`, itemValue)}
-                      >
-                        <Picker.Item label="Text" value="text" />
-                        <Picker.Item label="Number" value="number" />
-                      </Picker>
-                      <TextInput
-                        style={styles.input}
-                        placeholder={field.type === 'number' ? 'Write your number' : 'Write your text'}
-                        onChangeText={(value) => setFieldValue(`fields[${index}].value`, value)}
-                        onBlur={handleBlur(`fields[${index}].value`)}
-                        value={field.value}
-                        onSubmitEditing={() => Keyboard.dismiss()} // Dismiss the keyboard on Enter
-                        returnKeyType="done" // Changes the Enter key to "Done"
-                      />
-                      <Button title="Remove" onPress={() => remove(index)} style={styles.button} />
+                    <View key={index} style={styles.fieldGroup}>
+                      <View style={styles.fieldContainer}>
+                        <Picker
+                          selectedValue={field.type}
+                          style={styles.smallPicker}
+                          onValueChange={(itemValue) => setFieldValue(`fields[${index}].type`, itemValue)}
+                        >
+                          <Picker.Item label="Text" value="text" />
+                          <Picker.Item label="Number" value="number" />
+                        </Picker>
+                        <TextInput
+                          style={styles.input}
+                          placeholder={field.type === 'number' ? 'Write your number' : 'Write your text'}
+                          onChangeText={(value) => setFieldValue(`fields[${index}].value`, value)}
+                          onBlur={handleBlur(`fields[${index}].value`)}
+                          value={field.value}
+                          onSubmitEditing={() => Keyboard.dismiss()} 
+                          returnKeyType="done" 
+                        />
+                        <Button title="Remove" onPress={() => remove(index)} style={styles.button} />
+                      </View>
                       {touched.fields && touched.fields[index] && errors.fields && errors.fields[index]?.value ? (
                         <Text style={styles.error}>{errors.fields[index].value}</Text>
                       ) : null}
@@ -129,14 +131,17 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 4,
     padding: 8,
-    marginBottom: 16,
+    marginBottom: 8, 
     flex: 1,
     marginRight:10,
+  },
+  fieldGroup: {
+    marginBottom: 16,
   },
   fieldContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 4, 
   },
   smallPicker: {
     height: 50,
@@ -149,8 +154,10 @@ const styles = StyleSheet.create({
   error: {
     fontSize: 12,
     color: 'red',
+    marginTop: 4, 
   },
   spacer: {
     height: 20,
   },
 });
+
